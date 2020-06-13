@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1591903090">
-  <project timestamp="1591903090">
+<coverage generated="1592059267">
+  <project timestamp="1592059267">
     <file name="/home/alexey/php-project-lvl2/src/genDiff.php">
-      <line num="7" type="stmt" count="1"/>
-      <line num="8" type="stmt" count="1"/>
       <line num="9" type="stmt" count="1"/>
-      <line num="11" type="stmt" count="1"/>
-      <line num="12" type="stmt" count="1"/>
+      <line num="10" type="stmt" count="0"/>
       <line num="13" type="stmt" count="1"/>
+      <line num="14" type="stmt" count="1"/>
       <line num="15" type="stmt" count="1"/>
-      <line num="16" type="stmt" count="1"/>
       <line num="17" type="stmt" count="1"/>
+      <line num="18" type="stmt" count="1"/>
       <line num="19" type="stmt" count="1"/>
-      <line num="20" type="stmt" count="1"/>
+      <line num="21" type="stmt" count="1"/>
+      <line num="22" type="stmt" count="1"/>
       <line num="23" type="stmt" count="1"/>
-      <line num="24" type="stmt" count="1"/>
       <line num="25" type="stmt" count="1"/>
+      <line num="26" type="stmt" count="1"/>
       <line num="29" type="stmt" count="1"/>
-      <metrics loc="30" ncloc="30" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="15" coveredelements="15"/>
+      <line num="30" type="stmt" count="1"/>
+      <line num="31" type="stmt" count="1"/>
+      <line num="35" type="stmt" count="1"/>
+      <line num="40" type="stmt" count="1"/>
+      <line num="42" type="stmt" count="1"/>
+      <line num="43" type="stmt" count="0"/>
+      <line num="44" type="stmt" count="0"/>
+      <line num="46" type="stmt" count="1"/>
+      <line num="47" type="stmt" count="0"/>
+      <line num="48" type="stmt" count="0"/>
+      <line num="50" type="stmt" count="1"/>
+      <metrics loc="51" ncloc="51" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="20" elements="25" coveredelements="20"/>
     </file>
-    <metrics files="1" loc="30" ncloc="30" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="15" coveredelements="15"/>
+    <file name="/home/alexey/php-project-lvl2/src/parsers.php">
+      <line num="11" type="stmt" count="2"/>
+      <line num="13" type="stmt" count="2"/>
+      <line num="14" type="stmt" count="2"/>
+      <line num="15" type="stmt" count="2"/>
+      <line num="16" type="stmt" count="2"/>
+      <line num="17" type="stmt" count="2"/>
+      <line num="18" type="stmt" count="2"/>
+      <line num="19" type="stmt" count="2"/>
+      <line num="22" type="stmt" count="2"/>
+      <metrics loc="23" ncloc="23" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="9" coveredelements="9"/>
+    </file>
+    <metrics files="2" loc="74" ncloc="74" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="29" elements="34" coveredelements="29"/>
   </project>
 </coverage>

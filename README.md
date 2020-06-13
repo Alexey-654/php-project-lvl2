@@ -14,4 +14,8 @@ In your terminal go to the directory with installed package, then type:
 ```bash
 $ bin/gendiff pathToFile1 pathToFile2
 ```
+### json format
 [![asciicast](https://asciinema.org/a/PZwGvdCgvODZMn54MAh6YgHQY.svg)](https://asciinema.org/a/PZwGvdCgvODZMn54MAh6YgHQY)
+
+### yaml format
+[![asciicast](https://asciinema.org/a/37x2seVEubyD2aR2n2fQmKDK1.svg)](https://asciinema.org/a/37x2seVEubyD2aR2n2fQmKDK1)

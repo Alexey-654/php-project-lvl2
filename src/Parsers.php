@@ -4,20 +4,18 @@ namespace GenDiff\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-use function GenDiff\GenDiff\genDiff;
-
-function parse($pathToFile)
+function parseFile($pathToFile)
 {
     $mimeType = mime_content_type($pathToFile);
-
     switch ($mimeType) {
         case 'application/json':
             $items = json_decode(file_get_contents($pathToFile), true);
             break;
         case 'text/plain':
+            // $items = Yaml::parseFile($pathToFile, Yaml::PARSE_OBJECT_FOR_MAP);
             $items = Yaml::parseFile($pathToFile);
             break;
     }
-
+    
     return $items;
 }

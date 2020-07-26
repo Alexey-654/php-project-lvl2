@@ -5,7 +5,8 @@
     "authors": [
         {
             "name": "Alexey-654",
-            "email": "vianosenko@gmail.com"
+            "email": "vianosenko@gmail.com",
+            "email2": "22vianosenko@gmail.com"
         }
     ],
     "license": "MIT",
@@ -14,8 +15,7 @@
     ],
     "scripts": {
         "phpcs": "phpcs",
-        "phpcbf": "phpcbf",
-        "phpunit": "phpunit",
+        "phpunit": "new phpunit",
         "test": "phpunit tests"
     },
     "autoload": {
@@ -31,11 +31,10 @@
         ]
     },
     "require": {
-        "docopt/docopt": "^1.0",
         "funct/funct": "^1.5",
         "symfony/yaml": "^5.1"
     },
-    "require-dev": {
+    "New require-dev": {
         "squizlabs/php_codesniffer": "^3.5",
         "phpunit/phpunit": "^9.2"
     }

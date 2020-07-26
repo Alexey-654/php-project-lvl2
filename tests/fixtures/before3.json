@@ -1,11 +1,11 @@
 {
     "name": "alexey/php-project-lvl2",
-    "description": "Files diff generator",
     "type": "project",
     "authors": [
         {
             "name": "Alexey-654",
-            "email": "vianosenko@gmail.com"
+            "email": "changed vianosenko@gmail.com",
+            "email2": "22vianosenko@gmail.com"
         }
     ],
     "license": "MIT",
@@ -13,9 +13,7 @@
         "bin/gendiff"
     ],
     "scripts": {
-        "phpcs": "phpcs",
-        "phpcbf": "phpcbf",
-        "phpunit": "phpunit",
+        "new phpcs": "phpcs",
         "test": "phpunit tests"
     },
     "autoload": {
@@ -26,16 +24,14 @@
         "files": [
             "src/DiffAst.php",
             "src/ToString.php",
-            "src/GenDiff.php",
             "src/Parsers.php"
         ]
     },
     "require": {
-        "docopt/docopt": "^1.0",
         "funct/funct": "^1.5",
         "symfony/yaml": "^5.1"
     },
-    "require-dev": {
+    "New require-dev": {
         "squizlabs/php_codesniffer": "^3.5",
         "phpunit/phpunit": "^9.2"
     }

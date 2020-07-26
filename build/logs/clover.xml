@@ -1,46 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1592059267">
-  <project timestamp="1592059267">
-    <file name="/home/alexey/php-project-lvl2/src/genDiff.php">
-      <line num="9" type="stmt" count="1"/>
-      <line num="10" type="stmt" count="0"/>
+<coverage generated="1595776424">
+  <project timestamp="1595776424">
+    <file name="/home/alexey/php-project-lvl2/src/DiffAst.php">
       <line num="13" type="stmt" count="1"/>
-      <line num="14" type="stmt" count="1"/>
-      <line num="15" type="stmt" count="1"/>
+      <line num="16" type="stmt" count="1"/>
       <line num="17" type="stmt" count="1"/>
-      <line num="18" type="stmt" count="1"/>
       <line num="19" type="stmt" count="1"/>
-      <line num="21" type="stmt" count="1"/>
+      <line num="20" type="stmt" count="1"/>
       <line num="22" type="stmt" count="1"/>
       <line num="23" type="stmt" count="1"/>
       <line num="25" type="stmt" count="1"/>
       <line num="26" type="stmt" count="1"/>
+      <line num="27" type="stmt" count="1"/>
       <line num="29" type="stmt" count="1"/>
       <line num="30" type="stmt" count="1"/>
       <line num="31" type="stmt" count="1"/>
+      <line num="34" type="stmt" count="1"/>
       <line num="35" type="stmt" count="1"/>
-      <line num="40" type="stmt" count="1"/>
+      <line num="37" type="stmt" count="1"/>
       <line num="42" type="stmt" count="1"/>
-      <line num="43" type="stmt" count="0"/>
-      <line num="44" type="stmt" count="0"/>
+      <line num="44" type="stmt" count="1"/>
+      <line num="45" type="stmt" count="1"/>
       <line num="46" type="stmt" count="1"/>
-      <line num="47" type="stmt" count="0"/>
-      <line num="48" type="stmt" count="0"/>
-      <line num="50" type="stmt" count="1"/>
-      <metrics loc="51" ncloc="51" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="25" coveredstatements="20" elements="25" coveredelements="20"/>
+      <line num="47" type="stmt" count="1"/>
+      <line num="51" type="stmt" count="1"/>
+      <line num="53" type="stmt" count="1"/>
+      <line num="54" type="stmt" count="1"/>
+      <line num="55" type="stmt" count="1"/>
+      <line num="56" type="stmt" count="1"/>
+      <line num="60" type="stmt" count="1"/>
+      <line num="62" type="stmt" count="1"/>
+      <line num="63" type="stmt" count="1"/>
+      <line num="64" type="stmt" count="1"/>
+      <line num="65" type="stmt" count="1"/>
+      <line num="69" type="stmt" count="1"/>
+      <line num="71" type="stmt" count="1"/>
+      <line num="72" type="stmt" count="1"/>
+      <line num="73" type="stmt" count="1"/>
+      <line num="74" type="stmt" count="1"/>
+      <line num="76" type="stmt" count="1"/>
+      <line num="80" type="stmt" count="1"/>
+      <line num="86" type="stmt" count="1"/>
+      <line num="87" type="stmt" count="1"/>
+      <line num="88" type="stmt" count="1"/>
+      <line num="89" type="stmt" count="1"/>
+      <line num="90" type="stmt" count="1"/>
+      <line num="92" type="stmt" count="1"/>
+      <line num="95" type="stmt" count="1"/>
+      <line num="101" type="stmt" count="1"/>
+      <line num="102" type="stmt" count="1"/>
+      <line num="103" type="stmt" count="1"/>
+      <line num="104" type="stmt" count="1"/>
+      <line num="105" type="stmt" count="1"/>
+      <line num="107" type="stmt" count="1"/>
+      <line num="110" type="stmt" count="1"/>
+      <line num="116" type="stmt" count="1"/>
+      <line num="117" type="stmt" count="1"/>
+      <line num="118" type="stmt" count="1"/>
+      <line num="119" type="stmt" count="1"/>
+      <line num="120" type="stmt" count="1"/>
+      <line num="122" type="stmt" count="1"/>
+      <line num="125" type="stmt" count="1"/>
+      <line num="130" type="stmt" count="1"/>
+      <line num="131" type="stmt" count="1"/>
+      <line num="134" type="stmt" count="1"/>
+      <line num="139" type="stmt" count="1"/>
+      <line num="140" type="stmt" count="1"/>
+      <line num="143" type="stmt" count="1"/>
+      <metrics loc="144" ncloc="144" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="65" coveredstatements="65" elements="65" coveredelements="65"/>
     </file>
-    <file name="/home/alexey/php-project-lvl2/src/parsers.php">
+    <file name="/home/alexey/php-project-lvl2/src/GenDiff.php">
+      <line num="11" type="stmt" count="1"/>
+      <line num="12" type="stmt" count="1"/>
+      <line num="13" type="stmt" count="1"/>
+      <line num="15" type="stmt" count="1"/>
+      <metrics loc="16" ncloc="16" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="4" coveredelements="4"/>
+    </file>
+    <file name="/home/alexey/php-project-lvl2/src/Parsers.php">
+      <line num="9" type="stmt" count="2"/>
+      <line num="10" type="stmt" count="2"/>
       <line num="11" type="stmt" count="2"/>
+      <line num="12" type="stmt" count="2"/>
       <line num="13" type="stmt" count="2"/>
       <line num="14" type="stmt" count="2"/>
-      <line num="15" type="stmt" count="2"/>
       <line num="16" type="stmt" count="2"/>
       <line num="17" type="stmt" count="2"/>
-      <line num="18" type="stmt" count="2"/>
-      <line num="19" type="stmt" count="2"/>
-      <line num="22" type="stmt" count="2"/>
-      <metrics loc="23" ncloc="23" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="9" coveredelements="9"/>
+      <line num="20" type="stmt" count="2"/>
+      <metrics loc="21" ncloc="20" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="9" coveredelements="9"/>
     </file>
-    <metrics files="2" loc="74" ncloc="74" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="29" elements="34" coveredelements="29"/>
+    <file name="/home/alexey/php-project-lvl2/src/ToString.php">
+      <line num="17" type="stmt" count="1"/>
+      <line num="18" type="stmt" count="1"/>
+      <line num="19" type="stmt" count="1"/>
+      <line num="20" type="stmt" count="1"/>
+      <line num="22" type="stmt" count="1"/>
+      <line num="28" type="stmt" count="1"/>
+      <line num="29" type="stmt" count="1"/>
+      <line num="30" type="stmt" count="1"/>
+      <line num="31" type="stmt" count="1"/>
+      <line num="32" type="stmt" count="1"/>
+      <line num="33" type="stmt" count="1"/>
+      <line num="34" type="stmt" count="1"/>
+      <line num="35" type="stmt" count="1"/>
+      <line num="36" type="stmt" count="1"/>
+      <line num="37" type="stmt" count="1"/>
+      <line num="38" type="stmt" count="1"/>
+      <line num="39" type="stmt" count="1"/>
+      <line num="40" type="stmt" count="1"/>
+      <line num="43" type="stmt" count="1"/>
+      <line num="44" type="stmt" count="1"/>
+      <line num="46" type="stmt" count="1"/>
+      <metrics loc="47" ncloc="47" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="21" elements="21" coveredelements="21"/>
+    </file>
+    <file name="/home/alexey/php-project-lvl2/src/run.php">
+      <line num="5" type="stmt" count="0"/>
+      <line num="6" type="stmt" count="0"/>
+      <line num="7" type="stmt" count="0"/>
+      <line num="8" type="stmt" count="0"/>
+      <line num="9" type="stmt" count="0"/>
+      <line num="10" type="stmt" count="0"/>
+      <line num="11" type="stmt" count="0"/>
+      <line num="18" type="stmt" count="0"/>
+      <line num="19" type="stmt" count="0"/>
+      <metrics loc="30" ncloc="20" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="0" elements="9" coveredelements="0"/>
+    </file>
+    <metrics files="5" loc="258" ncloc="247" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="108" coveredstatements="99" elements="108" coveredelements="99"/>
   </project>
 </coverage>

@@ -11,25 +11,25 @@ class GenDiffTest extends TestCase
 {
     public function testGenDiff()
     {
+        $result1 = file_get_contents('tests/fixtures/result-pretty');
+        $result2 = file_get_contents('tests/fixtures/result-pretty-nested');
+        $result3 = file_get_contents('tests/fixtures/result-plain');
+        $result4 = file_get_contents('tests/fixtures/result-plain-nested');
+        $result5 = file_get_contents('tests/fixtures/result-json.json');
+        $result6 = file_get_contents('tests/fixtures/result-json-nested.json');
+
         $pathToFile1 = __DIR__ . '/fixtures/before.json';
         $pathToFile2 = __DIR__ . '/fixtures/after.json';
-
         $pathToFile3 = __DIR__ . '/fixtures/before.yaml';
         $pathToFile4 = __DIR__ . '/fixtures/after.yaml';
-
         $pathToFile5 = __DIR__ . '/fixtures/before2.json';
         $pathToFile6 = __DIR__ . '/fixtures/after2.json';
-
         $pathToFile7 = __DIR__ . '/fixtures/before2.yaml';
         $pathToFile8 = __DIR__ . '/fixtures/after2.yaml';
 
         $formatPretty = 'pretty';
         $formatPlain = 'plain';
-
-        $result1 = file_get_contents('tests/fixtures/result-pretty');
-        $result2 = file_get_contents('tests/fixtures/result-pretty-nested');
-        $result3 = file_get_contents('tests/fixtures/result-plain');
-        $result4 = file_get_contents('tests/fixtures/result-plain-nested');
+        $formatJson = 'json';
 
         $this->assertEquals($result1, genDiff($pathToFile1, $pathToFile2, $formatPretty));
         $this->assertEquals($result1, genDiff($pathToFile3, $pathToFile4, $formatPretty));
@@ -40,5 +40,10 @@ class GenDiffTest extends TestCase
         $this->assertEquals($result3, genDiff($pathToFile3, $pathToFile4, $formatPlain));
         $this->assertEquals($result4, genDiff($pathToFile5, $pathToFile6, $formatPlain));
         $this->assertEquals($result4, genDiff($pathToFile7, $pathToFile8, $formatPlain));
+
+        $this->assertEquals($result5, genDiff($pathToFile1, $pathToFile2, $formatJson));
+        $this->assertEquals($result5, genDiff($pathToFile3, $pathToFile4, $formatJson));
+        $this->assertEquals($result6, genDiff($pathToFile5, $pathToFile6, $formatJson));
+        $this->assertEquals($result6, genDiff($pathToFile7, $pathToFile8, $formatJson));
     }
 }

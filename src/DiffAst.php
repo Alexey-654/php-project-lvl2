@@ -24,8 +24,6 @@ function makeDiffAst($itemsBefore, $itemsAfter)
         }
         if (isChanged($key, $itemsBefore, $itemsAfter)) {
             $acc[] = makeNode($key, $itemsBefore, $itemsAfter, CHANGED_NODE);
-            // $acc[] = makeNode($key, $itemsBefore, $itemsAfter, NEW_NODE);
-            // $acc[] = makeNode($key, $itemsBefore, $itemsAfter, DELETED_NODE);
         }
         if (isNested($key, $itemsBefore, $itemsAfter)) {
             $children = makeDiffAst($itemsBefore[$key], $itemsAfter[$key]);

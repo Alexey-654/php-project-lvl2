@@ -10,12 +10,25 @@ $ composer require alexey-654/php-project-lvl2
 ```
 
 ## Usage
-In your terminal go to the directory with installed package, then type:
-```bash
-$ bin/gendiff pathToFile1 pathToFile2
-```
-### json format
-[![asciicast](https://asciinema.org/a/PZwGvdCgvODZMn54MAh6YgHQY.svg)](https://asciinema.org/a/PZwGvdCgvODZMn54MAh6YgHQY)
+This CLI support -
+- for input files - JSON or YAML format
+- for output three type  format  - 'pretty' by default, 'plain' and JSON
 
-### yaml format
-[![asciicast](https://asciinema.org/a/37x2seVEubyD2aR2n2fQmKDK1.svg)](https://asciinema.org/a/37x2seVEubyD2aR2n2fQmKDK1)
+In your terminal go to the directory with installed package, then type:
+
+```bash
+$ bin/gendiff --format plain pathToFile1 pathToFile2
+```
+
+## Example
+### input JSON files, output format - 'pretty' 
+[![asciicast](https://asciinema.org/a/DNPv3DjZl79cp0U07NWzuMc40.svg)](https://asciinema.org/a/DNPv3DjZl79cp0U07NWzuMc40)
+
+### input YAML files, output format - 'pretty' 
+[![asciicast](https://asciinema.org/a/6LRUGHYFKIJOLg9GUgALfdpdy.svg)](https://asciinema.org/a/6LRUGHYFKIJOLg9GUgALfdpdy)
+
+### input JSON files, output format - 'plain' 
+[![asciicast](https://asciinema.org/a/mjyeGVjrjqML58OdIeqlv5npB.svg)](https://asciinema.org/a/mjyeGVjrjqML58OdIeqlv5npB)
+
+### input JSON files, output format 'JSON' 
+[![asciicast](https://asciinema.org/a/HfKuyF9mapBK8bS1lFR7FQXcx.svg)](https://asciinema.org/a/HfKuyF9mapBK8bS1lFR7FQXcx)

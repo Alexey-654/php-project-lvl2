@@ -6,26 +6,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
 use function GenDiff\genDiff;
-use function GenDiff\Parsers\parseFile;
-use function GenDiff\DiffAst\makeDiffAst;
-use function GenDiff\ToString\toString;
 
 class GenDiffTest extends TestCase
 {
-    public function testParsers()
-    {
-        $pathToFile1 = __DIR__ . '/fixtures/before.json';
-        $pathToFile2 = __DIR__ . '/fixtures/after.json';
-
-        $pathToFile3 = __DIR__ . '/fixtures/before.yaml';
-        $pathToFile4 = __DIR__ . '/fixtures/after.yaml';
-
-        $this->assertTrue(is_array(parseFile($pathToFile1)));
-        $this->assertTrue(is_array(parseFile($pathToFile2)));
-        $this->assertTrue(is_array(parseFile($pathToFile3)));
-        $this->assertTrue(is_array(parseFile($pathToFile4)));
-    }
-
     public function testGenDiff()
     {
         $pathToFile1 = __DIR__ . '/fixtures/before.json';
@@ -40,12 +23,22 @@ class GenDiffTest extends TestCase
         $pathToFile7 = __DIR__ . '/fixtures/before2.yaml';
         $pathToFile8 = __DIR__ . '/fixtures/after2.yaml';
 
-        $result1 = file_get_contents('tests/fixtures/result-plain');
-        $result2 = file_get_contents('tests/fixtures/result-nested');
+        $formatPretty = 'pretty';
+        $formatPlain = 'plain';
 
-        $this->assertEquals($result1, genDiff($pathToFile1, $pathToFile2));
-        $this->assertEquals($result1, genDiff($pathToFile3, $pathToFile4));
-        $this->assertEquals($result2, genDiff($pathToFile5, $pathToFile6));
-        $this->assertEquals($result2, genDiff($pathToFile7, $pathToFile8));
+        $result1 = file_get_contents('tests/fixtures/result-pretty');
+        $result2 = file_get_contents('tests/fixtures/result-pretty-nested');
+        $result3 = file_get_contents('tests/fixtures/result-plain');
+        $result4 = file_get_contents('tests/fixtures/result-plain-nested');
+
+        $this->assertEquals($result1, genDiff($pathToFile1, $pathToFile2, $formatPretty));
+        $this->assertEquals($result1, genDiff($pathToFile3, $pathToFile4, $formatPretty));
+        $this->assertEquals($result2, genDiff($pathToFile5, $pathToFile6, $formatPretty));
+        $this->assertEquals($result2, genDiff($pathToFile7, $pathToFile8, $formatPretty));
+
+        $this->assertEquals($result3, genDiff($pathToFile1, $pathToFile2, $formatPlain));
+        $this->assertEquals($result3, genDiff($pathToFile3, $pathToFile4, $formatPlain));
+        $this->assertEquals($result4, genDiff($pathToFile5, $pathToFile6, $formatPlain));
+        $this->assertEquals($result4, genDiff($pathToFile7, $pathToFile8, $formatPlain));
     }
 }

@@ -23,8 +23,9 @@ function makeDiffAst($itemsBefore, $itemsAfter)
             $acc[] = makeNode($key, $itemsBefore, $itemsAfter, UNCHANGED_NODE);
         }
         if (isChanged($key, $itemsBefore, $itemsAfter)) {
-            $acc[] = makeNode($key, $itemsBefore, $itemsAfter, NEW_NODE);
-            $acc[] = makeNode($key, $itemsBefore, $itemsAfter, DELETED_NODE);
+            $acc[] = makeNode($key, $itemsBefore, $itemsAfter, CHANGED_NODE);
+            // $acc[] = makeNode($key, $itemsBefore, $itemsAfter, NEW_NODE);
+            // $acc[] = makeNode($key, $itemsBefore, $itemsAfter, DELETED_NODE);
         }
         if (isNested($key, $itemsBefore, $itemsAfter)) {
             $children = makeDiffAst($itemsBefore[$key], $itemsAfter[$key]);
@@ -42,37 +43,46 @@ function makeNode($key, $itemsBefore, $itemsAfter, $type, $children = null)
     if ($type === NEW_NODE) {
         $node = [
             'key' => $key,
-            'valueBefore' => '',
-            'valueAfter' => $itemsAfter[$key],
-            'node type' => NEW_NODE,
-            'has children' => false
+            'value_before' => '',
+            'value_after' => $itemsAfter[$key],
+            'node_type' => NEW_NODE,
+            'has_children' => false
         ];
     }
     if ($type === DELETED_NODE) {
         $node = [
             'key' => $key,
-            'valueBefore' => $itemsBefore[$key],
-            'valueAfter' => '',
-            'node type' => DELETED_NODE,
-            'has children' => false
+            'value_before' => $itemsBefore[$key],
+            'value_after' => '',
+            'node_type' => DELETED_NODE,
+            'has_children' => false
         ];
     }
     if ($type === UNCHANGED_NODE) {
         $node = [
             'key' => $key,
-            'valueBefore' => $itemsAfter[$key],
-            'valueAfter' => $itemsBefore[$key],
-            'node type' => UNCHANGED_NODE,
-            'has children' => false
+            'value_before' => $itemsAfter[$key],
+            'value_after' => $itemsBefore[$key],
+            'node_type' => UNCHANGED_NODE,
+            'has_children' => false
+        ];
+    }
+    if ($type === CHANGED_NODE) {
+        $node = [
+            'key' => $key,
+            'value_before' => $itemsBefore[$key],
+            'value_after' => $itemsAfter[$key],
+            'node_type' => CHANGED_NODE,
+            'has_children' => false
         ];
     }
     if ($type === NESTED_NODE) {
         $node = [
             'key' => $key,
-            'valueBefore' => $itemsBefore[$key],
-            'valueAfter' => $itemsAfter[$key],
-            'node type' => NESTED_NODE,
-            'has children' => true,
+            'value_before' => $itemsBefore[$key],
+            'value_after' => $itemsAfter[$key],
+            'node_type' => NESTED_NODE,
+            'has_children' => true,
             'children' => $children
         ];
     }

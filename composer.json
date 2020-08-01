@@ -25,7 +25,8 @@
           },
         "files": [
             "src/DiffAst.php",
-            "src/ToString.php",
+            "src/Formatters/Plain.php",
+            "src/Formatters/Pretty.php",
             "src/GenDiff.php",
             "src/Parsers.php"
         ]

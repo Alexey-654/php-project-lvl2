@@ -1,10 +1,11 @@
 <?php
 
-namespace GenDiff\ToString;
+namespace GenDiff\Formatters\Pretty;
 
 use const GenDiff\DiffAst\NEW_NODE;
 use const GenDiff\DiffAst\DELETED_NODE;
 use const GenDiff\DiffAst\UNCHANGED_NODE;
+use const GenDiff\DiffAst\CHANGED_NODE;
 use const GenDiff\DiffAst\NESTED_NODE;
 
 const PREFIX_NEW = '+ ';
@@ -12,7 +13,7 @@ const PREFIX_DEL = '- ';
 const PREFIX_UNCHANGED = '  ';
 
 
-function toString($difTreeAst)
+function toPrettyFormat($difTreeAst)
 {
     $renderedArray = renderAst($difTreeAst);
     $json = json_encode($renderedArray, JSON_PRETTY_PRINT);
@@ -24,19 +25,23 @@ function toString($difTreeAst)
 
 function renderAst($difTree)
 {
-    $renderedArray = array_reduce($difTree, function ($acc, $item) {
-        switch ($item['node type']) {
+    $renderedArray = array_reduce($difTree, function ($acc, $node) {
+        switch ($node['node_type']) {
             case NEW_NODE:
-                $acc[PREFIX_NEW . $item['key']] = $item['valueAfter'];
+                $acc[PREFIX_NEW . $node['key']] = $node['value_after'];
                 break;
             case DELETED_NODE:
-                $acc[PREFIX_DEL . $item['key']] = $item['valueBefore'];
+                $acc[PREFIX_DEL . $node['key']] = $node['value_before'];
                 break;
             case UNCHANGED_NODE:
-                $acc[PREFIX_UNCHANGED . $item['key']] = $item['valueBefore'];
+                $acc[PREFIX_UNCHANGED . $node['key']] = $node['value_before'];
+                break;
+            case CHANGED_NODE:
+                $acc[PREFIX_NEW . $node['key']] = $node['value_after'];
+                $acc[PREFIX_DEL . $node['key']] = $node['value_before'];
                 break;
             case NESTED_NODE:
-                $acc[PREFIX_UNCHANGED . $item['key']] = renderAst($item['children']);
+                $acc[PREFIX_UNCHANGED . $node['key']] = renderAst($node['children']);
                 break;
         }
 

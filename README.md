@@ -12,7 +12,7 @@ $ composer require alexey-654/php-project-lvl2
 ## Usage
 This CLI support -
 - for input files - JSON or YAML format
-- for output three type  format  - 'pretty' by default, 'plain' and JSON
+- for output three type format  - 'pretty' by default, 'plain' and JSON
 
 In your terminal go to the directory with installed package, then type:
 
@@ -30,5 +30,5 @@ $ bin/gendiff --format plain pathToFile1 pathToFile2
 ### input JSON files, output format - 'plain' 
 [![asciicast](https://asciinema.org/a/mjyeGVjrjqML58OdIeqlv5npB.svg)](https://asciinema.org/a/mjyeGVjrjqML58OdIeqlv5npB)
 
-### input JSON files, output format 'JSON' 
+### input JSON files, output format - 'JSON' 
 [![asciicast](https://asciinema.org/a/HfKuyF9mapBK8bS1lFR7FQXcx.svg)](https://asciinema.org/a/HfKuyF9mapBK8bS1lFR7FQXcx)

@@ -15,6 +15,9 @@ function parseFile($pathToFile)
             // $items = Yaml::parseFile($pathToFile, Yaml::PARSE_OBJECT_FOR_MAP);
             $items = Yaml::parseFile($pathToFile);
             break;
+        default:
+            throw new \Exception("Type of file '$pathToFile' is not valid");
+            break;
     }
     
     return $items;

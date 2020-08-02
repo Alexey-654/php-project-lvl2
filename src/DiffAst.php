@@ -38,51 +38,53 @@ function makeDiffAst($itemsBefore, $itemsAfter)
 
 function makeNode($key, $itemsBefore, $itemsAfter, $type, $children = null)
 {
-    if ($type === NEW_NODE) {
-        $node = [
-            'key' => $key,
-            'value_before' => '',
-            'value_after' => $itemsAfter[$key],
-            'node_type' => NEW_NODE,
-            'has_children' => false
-        ];
-    }
-    if ($type === DELETED_NODE) {
-        $node = [
-            'key' => $key,
-            'value_before' => $itemsBefore[$key],
-            'value_after' => '',
-            'node_type' => DELETED_NODE,
-            'has_children' => false
-        ];
-    }
-    if ($type === UNCHANGED_NODE) {
-        $node = [
-            'key' => $key,
-            'value_before' => $itemsAfter[$key],
-            'value_after' => $itemsBefore[$key],
-            'node_type' => UNCHANGED_NODE,
-            'has_children' => false
-        ];
-    }
-    if ($type === CHANGED_NODE) {
-        $node = [
-            'key' => $key,
-            'value_before' => $itemsBefore[$key],
-            'value_after' => $itemsAfter[$key],
-            'node_type' => CHANGED_NODE,
-            'has_children' => false
-        ];
-    }
-    if ($type === NESTED_NODE) {
-        $node = [
-            'key' => $key,
-            'value_before' => $itemsBefore[$key],
-            'value_after' => $itemsAfter[$key],
-            'node_type' => NESTED_NODE,
-            'has_children' => true,
-            'children' => $children
-        ];
+    switch ($type) {
+        case NEW_NODE:
+            $node = [
+                'key' => $key,
+                'value_before' => '',
+                'value_after' => $itemsAfter[$key],
+                'node_type' => NEW_NODE,
+                'has_children' => false
+            ];
+            break;
+        case DELETED_NODE:
+            $node = [
+                'key' => $key,
+                'value_before' => $itemsBefore[$key],
+                'value_after' => '',
+                'node_type' => DELETED_NODE,
+                'has_children' => false
+            ];
+            break;
+        case UNCHANGED_NODE:
+            $node = [
+                'key' => $key,
+                'value_before' => $itemsAfter[$key],
+                'value_after' => $itemsBefore[$key],
+                'node_type' => UNCHANGED_NODE,
+                'has_children' => false
+            ];
+            break;
+        case CHANGED_NODE:
+            $node = [
+                'key' => $key,
+                'value_before' => $itemsBefore[$key],
+                'value_after' => $itemsAfter[$key],
+                'node_type' => CHANGED_NODE,
+                'has_children' => false
+            ];
+            break;
+        case NESTED_NODE:
+            $node = [
+                'key' => $key,
+                'value_before' => $itemsBefore[$key],
+                'value_after' => $itemsAfter[$key],
+                'node_type' => NESTED_NODE,
+                'has_children' => true,
+                'children' => $children
+            ];
+            break;
     }
 
     return $node;
@@ -96,8 +98,9 @@ function isUnchanged($key, $itemsBefore, $itemsAfter)
         && isset($itemsBefore[$key], $itemsAfter[$key])
         && !is_array($itemsBefore[$key])
         && !is_array($itemsAfter[$key])
+        && in_array($itemsBefore[$key], $itemsAfter, true)
     ) {
-        return in_array($itemsBefore[$key], $itemsAfter, true);
+        return true;
     }
 
     return false;
@@ -111,8 +114,9 @@ function isChanged($key, $itemsBefore, $itemsAfter)
         && isset($itemsBefore[$key], $itemsAfter[$key])
         && !is_array($itemsBefore[$key])
         && !is_array($itemsAfter[$key])
+        && !in_array($itemsBefore[$key], $itemsAfter, true)
     ) {
-        return !in_array($itemsBefore[$key], $itemsAfter, true);
+        return true;
     }
 
     return false;
@@ -135,18 +139,10 @@ function isNested($key, $itemsBefore, $itemsAfter)
 
 function isNew($key, $itemsBefore)
 {
-    if (!array_key_exists($key, $itemsBefore)) {
-        return true;
-    }
-
-    return false;
+    return !array_key_exists($key, $itemsBefore);
 }
 
 function isDeleted($key, $itemsAfter)
 {
-    if (!array_key_exists($key, $itemsAfter)) {
-        return true;
-    }
-
-    return false;
+    return !array_key_exists($key, $itemsAfter);
 }

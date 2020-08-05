@@ -4,21 +4,18 @@ namespace GenDiff\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseFile($pathToFile)
+function parseFile($fileContent, $mimeType)
 {
-    $mimeType = mime_content_type($pathToFile);
     switch ($mimeType) {
         case 'application/json':
-            $items = json_decode(file_get_contents($pathToFile), true);
+            return json_decode($fileContent, true);
             break;
         case 'text/plain':
-            // $items = Yaml::parseFile($pathToFile, Yaml::PARSE_OBJECT_FOR_MAP);
-            $items = Yaml::parseFile($pathToFile);
+            // return Yaml::parse($file, Yaml::PARSE_OBJECT_FOR_MAP);
+            return Yaml::parse($fileContent);
             break;
         default:
-            throw new \Exception("Type of file '$pathToFile' is not valid");
+            throw new \Exception("Mime type - '$mimeType' of input file is not valid");
             break;
     }
-    
-    return $items;
 }

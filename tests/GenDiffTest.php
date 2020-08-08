@@ -11,33 +11,25 @@ class GenDiffTest extends TestCase
     /**
     * @dataProvider provider
     */
-    public function testGenDiff($expected, $file1, $file2, $format)
+    public function testGenDiff($expected, $pathToFileBefore, $pathToFileAfter, $format)
     {
-        $this->assertEquals($expected, genDiff($file1, $file2, $format));
+        $this->assertEquals($expected, genDiff($pathToFileBefore, $pathToFileAfter, $format));
     }
 
     public function provider()
     {
-        $expectedResult1 = file_get_contents('tests/fixtures/results-files/pretty-nested');
-        $expectedResult2 = file_get_contents('tests/fixtures/results-files/plain-nested');
-        $expectedResult3 = file_get_contents('tests/fixtures/results-files/json-nested.json');
-
-        $pathToFile1 = __DIR__ . '/fixtures/input-files/1-before.json';
-        $pathToFile2 = __DIR__ . '/fixtures/input-files/1-after.json';
-        $pathToFile3 = __DIR__ . '/fixtures/input-files/2-before.yaml';
-        $pathToFile4 = __DIR__ . '/fixtures/input-files/2-after.yaml';
-
-        // $filesMap = scandir(__DIR__ . '/fixtures/input-files');
-
+        $dirWithFiles = __DIR__ . '/fixtures/';
+        $getResultFile = fn ($fileName) => file_get_contents($dirWithFiles . $fileName);
+        $getPathToFile = fn ($fileName) => $dirWithFiles . $fileName;
         $formatsMap = ['pretty', 'plain', 'json'];
 
         return [
-            [$expectedResult1, $pathToFile1, $pathToFile2, $formatsMap[0]],
-            [$expectedResult1, $pathToFile3, $pathToFile4, $formatsMap[0]],
-            [$expectedResult2, $pathToFile1, $pathToFile2, $formatsMap[1]],
-            [$expectedResult2, $pathToFile3, $pathToFile4, $formatsMap[1]],
-            [$expectedResult3, $pathToFile1, $pathToFile2, $formatsMap[2]],
-            [$expectedResult3, $pathToFile3, $pathToFile4, $formatsMap[2]],
+            [$getResultFile('pretty'), $getPathToFile('before.json'), $getPathToFile('after.json'), $formatsMap[0]],
+            [$getResultFile('pretty'), $getPathToFile('before.yaml'), $getPathToFile('after.yaml'), $formatsMap[0]],
+            [$getResultFile('plain'), $getPathToFile('before.json'), $getPathToFile('after.json'), $formatsMap[1]],
+            [$getResultFile('plain'), $getPathToFile('before.yaml'), $getPathToFile('after.yaml'), $formatsMap[1]],
+            [$getResultFile('json.json'), $getPathToFile('before.json'), $getPathToFile('after.json'), $formatsMap[2]],
+            [$getResultFile('json.json'), $getPathToFile('before.yaml'), $getPathToFile('after.yaml'), $formatsMap[2]],
         ];
     }
 }

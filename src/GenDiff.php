@@ -2,43 +2,32 @@
 
 namespace GenDiff;
 
-use function GenDiff\Parsers\parseFile;
+use function GenDiff\Parsers\parse;
 use function GenDiff\DiffAst\makeDiffAst;
 use function GenDiff\Formatters\Plain\toPlainFormat;
 use function GenDiff\Formatters\Pretty\toPrettyFormat;
 use function GenDiff\Formatters\Json\toJsonFormat;
 
-function genDiff($pathToFileBefore, $pathToFileAfter, $format = 'pretty')
+function genDiff($pathToFileBefore, $pathToFileAfter, $outputFormat = 'pretty')
 {
-    $fileContentBefore = file_get_contents($pathToFileBefore);
-    $fileContentAfter = file_get_contents($pathToFileAfter);
-    $mimeTypeBefore = mime_content_type($pathToFileBefore);
-    $mimeTypeAfter = mime_content_type($pathToFileAfter);
+    $dataBefore = file_get_contents($pathToFileBefore);
+    $dataAfter = file_get_contents($pathToFileAfter);
+    $formatFileBefore = pathinfo($pathToFileBefore, PATHINFO_EXTENSION);
+    $formatFileAfter = pathinfo($pathToFileAfter, PATHINFO_EXTENSION);
     
-    try {
-        parseFile($fileContentBefore, $mimeTypeBefore);
-        parseFile($fileContentAfter, $mimeTypeAfter);
-    } catch (\Exception $e) {
-        echo $e;
-    }
+    $itemsBefore = parse($dataBefore, $formatFileBefore);
+    $itemsAfter = parse($dataAfter, $formatFileAfter);
 
-    $itemsBefore = parseFile($fileContentBefore, $mimeTypeBefore);
-    $itemsAfter = parseFile($fileContentAfter, $mimeTypeAfter);
+    $diffAst = makeDiffAst($itemsBefore, $itemsAfter);
 
-    $diffTreeAst = makeDiffAst($itemsBefore, $itemsAfter);
-
-    switch ($format) {
+    switch ($outputFormat) {
         case 'pretty':
-            return toPrettyFormat($diffTreeAst);
-            break;
+            return toPrettyFormat($diffAst);
         case 'plain':
-            return toPlainFormat($diffTreeAst);
-            break;
+            return toPlainFormat($diffAst);
         case 'json':
-            return toJsonFormat($diffTreeAst);
-            break;
+            return toJsonFormat($diffAst);
         default:
-            return "Format '$format' is not valid!";
-            break;
+            throw new \Exception("Argument '$outputFormat' is not valid for function 'genDiff'");
     }
 }

@@ -8,45 +8,92 @@ use const GenDiff\DiffAst\UNCHANGED_NODE;
 use const GenDiff\DiffAst\CHANGED_NODE;
 use const GenDiff\DiffAst\NESTED_NODE;
 
-const PREFIX_NEW = '+ ';
-const PREFIX_DEL = '- ';
-const PREFIX_UNCHANGED = '  ';
+const MIN_SPACE_COUNT = 2;
+const SPACE_FOR_EACH_LEVEL_COUNT = 4;
 
+const NEW_PREFIX = '+ ';
+const DEL_PREFIX = '- ';
+const BLANK_PREFIX = '  ';
 
-function toPrettyFormat($difTreeAst)
+function toPrettyFormat($diffAst)
 {
-    $renderedArray = renderAst($difTreeAst);
-    $json = json_encode($renderedArray, JSON_PRETTY_PRINT);
-    $needles = ['"', ','];
-    $renderedJson = str_replace($needles, '', $json);
-
-    return $renderedJson;
+    return "{\n" . renderAst($diffAst) . "\n}";
 }
 
-function renderAst($difTree)
+
+function renderAst($diffAst, $level = 0)
 {
-    $renderedArray = array_reduce($difTree, function ($acc, $node) {
-        switch ($node['node_type']) {
+    $renderedArray = array_reduce($diffAst, function ($acc, $node) use ($level) {
+        [
+            'key' => $key,
+            'value_before' => $valueBefore,
+            'value_after' => $valueAfter,
+            'children' => $children,
+            'node_type' => $type,
+        ] = $node;
+
+        switch ($type) {
             case NEW_NODE:
-                $acc[PREFIX_NEW . $node['key']] = $node['value_after'];
+                $acc[] = makeString($key, $valueAfter, $level, NEW_PREFIX);
                 break;
             case DELETED_NODE:
-                $acc[PREFIX_DEL . $node['key']] = $node['value_before'];
+                $acc[] = makeString($key, $valueBefore, $level, DEL_PREFIX);
                 break;
             case UNCHANGED_NODE:
-                $acc[PREFIX_UNCHANGED . $node['key']] = $node['value_before'];
+                $acc[] = makeString($key, $valueBefore, $level, BLANK_PREFIX);
                 break;
             case CHANGED_NODE:
-                $acc[PREFIX_NEW . $node['key']] = $node['value_after'];
-                $acc[PREFIX_DEL . $node['key']] = $node['value_before'];
+                $acc[] = makeString($key, $valueAfter, $level, NEW_PREFIX);
+                $acc[] = makeString($key, $valueBefore, $level, DEL_PREFIX);
                 break;
             case NESTED_NODE:
-                $acc[PREFIX_UNCHANGED . $node['key']] = renderAst($node['children']);
+                $nestedlevel = $level + 1;
+                $valueChildren = renderAst($children, $nestedlevel);
+                $acc[] = makeString($key, $valueChildren, $level, NESTED_NODE);
                 break;
+            default:
+                throw new \Exception("Type of node - '$type' is undefined");
         }
 
         return $acc;
     }, []);
 
-    return $renderedArray;
+    return implode("\n", $renderedArray);
+}
+
+
+function makeString($key, $value, $level, $prefix)
+{
+    $spaceQuantity = MIN_SPACE_COUNT + ($level * SPACE_FOR_EACH_LEVEL_COUNT);
+    $spaceString = str_pad("", $spaceQuantity, " ", STR_PAD_LEFT);
+
+    if ($prefix === NESTED_NODE) {
+        $resultString = $spaceString . BLANK_PREFIX . $key . ": {\n" . toString($value) . "\n" . $spaceString . "  }";
+
+        return $resultString;
+    }
+    if (is_array($value)) {
+        $level++;
+        $mappedValues = array_map(function ($key, $value) use ($level) {
+            return makeString($key, $value, $level, BLANK_PREFIX);
+        }, array_keys($value), $value);
+        $value = implode("\n", $mappedValues);
+        $resultString = $spaceString . $prefix . $key . ": {\n" . toString($value) . "\n" . $spaceString . "  }";
+
+        return $resultString;
+    }
+
+    $resultString =  $spaceString . $prefix . $key . ': ' . toString($value);
+    
+    return $resultString;
+}
+
+
+function toString($data)
+{
+    if (is_bool($data)) {
+        return $data ? 'true' : 'false';
+    }
+    
+    return $data;
 }

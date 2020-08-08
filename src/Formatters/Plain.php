@@ -8,34 +8,30 @@ use const GenDiff\DiffAst\UNCHANGED_NODE;
 use const GenDiff\DiffAst\NESTED_NODE;
 use const GenDiff\DiffAst\CHANGED_NODE;
 
-const PREFIX = 'Property ';
-const TEXT_NEW_NODE = ' was added with value: ';
-const TEXT_DELETED_NODE = ' was removed';
-const TEXT_CHANGED_NODE1 = ' was changed. From ';
-const TEXT_CHANGED_NODE2 = ' to ';
-const TEXT_COMPLEX = 'complex value';
-
-function toPlainFormat($diffTreeAst, $key = '')
+function toPlainFormat($diffAst, $key = '')
 {
-    $renderedArray = array_reduce($diffTreeAst, function ($acc, $node) use ($key) {
-        $key = empty($key) ? $node['key'] : $key . "." . $node['key'];
-        $valueBefore = is_array($node['value_before']) ? TEXT_COMPLEX : $node['value_before'];
-        $valueAfter = is_array($node['value_after']) ? TEXT_COMPLEX : $node['value_after'];
+    $renderedArray = array_reduce($diffAst, function ($acc, $node) use ($key) {
+        $key = empty($key) ? $node['key'] : "{$key}.{$node['key']}";
+        $valueBefore = is_array($node['value_before']) ? 'complex value' : $node['value_before'];
+        $valueAfter = is_array($node['value_after']) ? 'complex value' : $node['value_after'];
 
         switch ($node['node_type']) {
             case NEW_NODE:
-                $acc[] = PREFIX . "'$key'" . TEXT_NEW_NODE . "'$valueAfter'";
+                $acc[] = "Property '{$key}' was added with value: '{$valueAfter}'";
                 break;
             case DELETED_NODE:
-                $acc[] = PREFIX . "'$key'" . TEXT_DELETED_NODE;
+                $acc[] = "Property '{$key}' was removed";
                 break;
             case CHANGED_NODE:
-                $acc[] = PREFIX . "'$key'" . TEXT_CHANGED_NODE1 . "'$valueBefore'"
-                         . TEXT_CHANGED_NODE2 . "'$valueAfter'";
+                $acc[] = "Property '{$key}' was changed. From '{$valueBefore}' to '{$valueAfter}'";
                 break;
             case NESTED_NODE:
                 $acc[] = toPlainFormat($node['children'], $key);
                 break;
+            case UNCHANGED_NODE:
+                break;
+            default:
+                throw new \Exception("Node - '{$node['node_type']}' is undefined");
         }
 
         return $acc;

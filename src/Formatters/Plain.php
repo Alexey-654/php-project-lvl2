@@ -2,20 +2,20 @@
 
 namespace GenDiff\Formatters\Plain;
 
-use const GenDiff\DiffAst\NEW_NODE;
-use const GenDiff\DiffAst\DELETED_NODE;
-use const GenDiff\DiffAst\UNCHANGED_NODE;
-use const GenDiff\DiffAst\NESTED_NODE;
-use const GenDiff\DiffAst\CHANGED_NODE;
+use const GenDiff\Diff\NEW_NODE;
+use const GenDiff\Diff\DELETED_NODE;
+use const GenDiff\Diff\UNCHANGED_NODE;
+use const GenDiff\Diff\NESTED_NODE;
+use const GenDiff\Diff\CHANGED_NODE;
 
-function toPlainFormat($diffAst, $key = '')
+function toPlainFormat($diff, $key = '')
 {
-    $renderedArray = array_reduce($diffAst, function ($acc, $node) use ($key) {
+    $renderedArray = array_reduce($diff, function ($acc, $node) use ($key) {
         $key = empty($key) ? $node['key'] : "{$key}.{$node['key']}";
-        $valueBefore = is_array($node['value_before']) ? 'complex value' : $node['value_before'];
-        $valueAfter = is_array($node['value_after']) ? 'complex value' : $node['value_after'];
+        $valueBefore = is_array($node['valueBefore']) ? 'complex value' : $node['valueBefore'];
+        $valueAfter = is_array($node['valueAfter']) ? 'complex value' : $node['valueAfter'];
 
-        switch ($node['node_type']) {
+        switch ($node['nodeType']) {
             case NEW_NODE:
                 $acc[] = "Property '{$key}' was added with value: '{$valueAfter}'";
                 break;
@@ -31,7 +31,7 @@ function toPlainFormat($diffAst, $key = '')
             case UNCHANGED_NODE:
                 break;
             default:
-                throw new \Exception("Node - '{$node['node_type']}' is undefined");
+                throw new \Exception("Node - '{$node['nodeType']}' is undefined");
         }
 
         return $acc;

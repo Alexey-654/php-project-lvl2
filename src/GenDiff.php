@@ -3,7 +3,7 @@
 namespace GenDiff;
 
 use function GenDiff\Parsers\parse;
-use function GenDiff\DiffAst\makeDiffAst;
+use function GenDiff\Diff\makeDiff;
 use function GenDiff\Formatters\Plain\toPlainFormat;
 use function GenDiff\Formatters\Pretty\toPrettyFormat;
 use function GenDiff\Formatters\Json\toJsonFormat;
@@ -18,16 +18,16 @@ function genDiff($pathToFileBefore, $pathToFileAfter, $outputFormat = 'pretty')
     $itemsBefore = parse($dataBefore, $formatFileBefore);
     $itemsAfter = parse($dataAfter, $formatFileAfter);
 
-    $diffAst = makeDiffAst($itemsBefore, $itemsAfter);
+    $diff = makeDiff($itemsBefore, $itemsAfter);
 
     switch ($outputFormat) {
         case 'pretty':
-            return toPrettyFormat($diffAst);
+            return toPrettyFormat($diff);
         case 'plain':
-            return toPlainFormat($diffAst);
+            return toPlainFormat($diff);
         case 'json':
-            return toJsonFormat($diffAst);
+            return toJsonFormat($diff);
         default:
-            throw new \Exception("Argument '$outputFormat' is not valid for function 'genDiff'");
+            throw new \Exception("Argument '$outputFormat' is not valid");
     }
 }

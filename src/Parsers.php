@@ -13,6 +13,6 @@ function parse($data, $format)
             // return Yaml::parse($file, Yaml::PARSE_OBJECT_FOR_MAP);
             return Yaml::parse($data);
         default:
-            throw new \Exception("Argument - '$format' is not valid for function 'parseFile'");
+            throw new \Exception("Argument - '$format' is not valid");
     }
 }

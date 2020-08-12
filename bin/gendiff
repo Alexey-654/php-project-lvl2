@@ -29,10 +29,5 @@ DOC;
 
 $args = Docopt::handle($doc, array('version' => '0.1'));
 
-try {
-  print_r(genDiff($args["<pathToFile1>"], $args["<pathToFile2>"], $args["--format"]));
-} catch (\Exception $e) {
-  echo $e;
-}
-
+print_r(genDiff($args["<pathToFile1>"], $args["<pathToFile2>"], $args["--format"]));
 print_r("\n");

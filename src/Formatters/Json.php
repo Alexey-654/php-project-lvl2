@@ -2,33 +2,33 @@
 
 namespace GenDiff\Formatters\Json;
 
-use const GenDiff\DiffAst\NEW_NODE;
-use const GenDiff\DiffAst\DELETED_NODE;
-use const GenDiff\DiffAst\UNCHANGED_NODE;
-use const GenDiff\DiffAst\CHANGED_NODE;
-use const GenDiff\DiffAst\NESTED_NODE;
+use const GenDiff\Diff\NEW_NODE;
+use const GenDiff\Diff\DELETED_NODE;
+use const GenDiff\Diff\UNCHANGED_NODE;
+use const GenDiff\Diff\CHANGED_NODE;
+use const GenDiff\Diff\NESTED_NODE;
 
 const NEW_PREFIX = '+ ';
 const DEL_PREFIX = '- ';
 const BLANK_PREFIX = '  ';
 
-function toJsonFormat($diffAst)
+function toJsonFormat($diff)
 {
-    $renderedArray = renderAst($diffAst);
+    $renderedArray = renderDiff($diff);
     $json = json_encode($renderedArray, JSON_PRETTY_PRINT);
 
     return $json;
 }
 
-function renderAst($diffAst)
+function renderDiff($diff)
 {
-    $renderedArray = array_reduce($diffAst, function ($acc, $node) {
+    $renderedArray = array_reduce($diff, function ($acc, $node) {
         [
             'key' => $key,
-            'value_before' => $valueBefore,
-            'value_after' => $valueAfter,
+            'valueBefore' => $valueBefore,
+            'valueAfter' => $valueAfter,
             'children' => $children,
-            'node_type' => $type,
+            'nodeType' => $type,
         ] = $node;
 
         switch ($type) {
@@ -46,7 +46,7 @@ function renderAst($diffAst)
                 $acc[DEL_PREFIX . $key] = $valueBefore;
                 break;
             case NESTED_NODE:
-                $acc[BLANK_PREFIX . $key] = renderAst($children);
+                $acc[BLANK_PREFIX . $key] = renderDiff($children);
                 break;
             default:
                 throw new \Exception("Type of node - '$type' is undefined");

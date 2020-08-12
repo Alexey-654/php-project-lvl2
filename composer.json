@@ -1,5 +1,5 @@
 {
-    "name": "alexey/php-project-lvl2",
+    "name": "alexey-654/php-project-lvl2",
     "description": "Files diff generator",
     "type": "project",
     "authors": [
@@ -24,7 +24,7 @@
             "GenDiff\\Tests\\": "tests"
           },
         "files": [
-            "src/DiffAst.php",
+            "src/Diff.php",
             "src/Formatters/Plain.php",
             "src/Formatters/Pretty.php",
             "src/Formatters/Json.php",

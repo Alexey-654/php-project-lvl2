@@ -11,25 +11,27 @@ class GenDiffTest extends TestCase
     /**
     * @dataProvider provider
     */
-    public function testGenDiff($expected, $pathToFileBefore, $pathToFileAfter, $format)
+    public function testGenDiff($fileNameExpected, $fileNameBefore, $fileNameAfter, $format)
     {
-        $this->assertEquals($expected, genDiff($pathToFileBefore, $pathToFileAfter, $format));
+        $dirWithFiles = __DIR__ . '/fixtures/';
+        $getExpectedFile = fn ($fileName) => file_get_contents($dirWithFiles . $fileName);
+        $getPathToFile = fn ($fileName) => $dirWithFiles . $fileName;
+
+        $this->assertEquals(
+            $getExpectedFile($fileNameExpected),
+            genDiff($getPathToFile($fileNameBefore), $getPathToFile($fileNameAfter), $format)
+        );
     }
 
     public function provider()
     {
-        $dirWithFiles = __DIR__ . '/fixtures/';
-        $getResultFile = fn ($fileName) => file_get_contents($dirWithFiles . $fileName);
-        $getPathToFile = fn ($fileName) => $dirWithFiles . $fileName;
-        $formatsMap = ['pretty', 'plain', 'json'];
-
         return [
-            [$getResultFile('pretty'), $getPathToFile('before.json'), $getPathToFile('after.json'), $formatsMap[0]],
-            [$getResultFile('pretty'), $getPathToFile('before.yaml'), $getPathToFile('after.yaml'), $formatsMap[0]],
-            [$getResultFile('plain'), $getPathToFile('before.json'), $getPathToFile('after.json'), $formatsMap[1]],
-            [$getResultFile('plain'), $getPathToFile('before.yaml'), $getPathToFile('after.yaml'), $formatsMap[1]],
-            [$getResultFile('json.json'), $getPathToFile('before.json'), $getPathToFile('after.json'), $formatsMap[2]],
-            [$getResultFile('json.json'), $getPathToFile('before.yaml'), $getPathToFile('after.yaml'), $formatsMap[2]],
+            ['pretty', 'before.json', 'after.json', 'pretty'],
+            ['pretty', 'before.yaml', 'after.yaml', 'pretty'],
+            ['plain', 'before.json', 'after.json', 'plain'],
+            ['plain', 'before.yaml', 'after.yaml', 'plain'],
+            ['json.json', 'before.json', 'after.json', 'json'],
+            ['json.json', 'before.yaml', 'after.yaml', 'json'],
         ];
     }
 }

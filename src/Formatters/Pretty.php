@@ -2,11 +2,11 @@
 
 namespace GenDiff\Formatters\Pretty;
 
-use const GenDiff\DiffAst\NEW_NODE;
-use const GenDiff\DiffAst\DELETED_NODE;
-use const GenDiff\DiffAst\UNCHANGED_NODE;
-use const GenDiff\DiffAst\CHANGED_NODE;
-use const GenDiff\DiffAst\NESTED_NODE;
+use const GenDiff\Diff\NEW_NODE;
+use const GenDiff\Diff\DELETED_NODE;
+use const GenDiff\Diff\UNCHANGED_NODE;
+use const GenDiff\Diff\CHANGED_NODE;
+use const GenDiff\Diff\NESTED_NODE;
 
 const MIN_SPACE_COUNT = 2;
 const SPACE_FOR_EACH_LEVEL_COUNT = 4;
@@ -15,24 +15,24 @@ const NEW_PREFIX = '+ ';
 const DEL_PREFIX = '- ';
 const BLANK_PREFIX = '  ';
 
-function toPrettyFormat($diffAst)
+function toPrettyFormat($diff)
 {
-    return "{\n" . renderAst($diffAst) . "\n}";
+    return "{\n" . renderDiff($diff) . "\n}";
 }
 
 
-function renderAst($diffAst, $level = 0)
+function renderDiff($diff, $level = 0)
 {
-    $renderedArray = array_reduce($diffAst, function ($acc, $node) use ($level) {
+    $renderedArray = array_reduce($diff, function ($acc, $node) use ($level) {
         [
             'key' => $key,
-            'value_before' => $valueBefore,
-            'value_after' => $valueAfter,
+            'valueBefore' => $valueBefore,
+            'valueAfter' => $valueAfter,
+            'nodeType' => $nodeType,
             'children' => $children,
-            'node_type' => $type,
         ] = $node;
 
-        switch ($type) {
+        switch ($nodeType) {
             case NEW_NODE:
                 $acc[] = makeString($key, $valueAfter, $level, NEW_PREFIX);
                 break;
@@ -48,7 +48,7 @@ function renderAst($diffAst, $level = 0)
                 break;
             case NESTED_NODE:
                 $nestedlevel = $level + 1;
-                $valueChildren = renderAst($children, $nestedlevel);
+                $valueChildren = renderDiff($children, $nestedlevel);
                 $acc[] = makeString($key, $valueChildren, $level, NESTED_NODE);
                 break;
             default:
@@ -64,26 +64,28 @@ function renderAst($diffAst, $level = 0)
 
 function makeString($key, $value, $level, $prefix)
 {
-    $spaceQuantity = MIN_SPACE_COUNT + ($level * SPACE_FOR_EACH_LEVEL_COUNT);
-    $spaceString = str_pad("", $spaceQuantity, " ", STR_PAD_LEFT);
+    $spaceCount = MIN_SPACE_COUNT + ($level * SPACE_FOR_EACH_LEVEL_COUNT);
+    $indent = str_pad("", $spaceCount, " ", STR_PAD_LEFT);
 
     if ($prefix === NESTED_NODE) {
-        $resultString = $spaceString . BLANK_PREFIX . $key . ": {\n" . toString($value) . "\n" . $spaceString . "  }";
-
+        $resultString = $indent . BLANK_PREFIX . $key . ": {\n" . toString($value) . "\n" . $indent . "  }";
         return $resultString;
     }
+
     if (is_array($value)) {
         $level++;
+
+        $keys = array_keys($value);
         $mappedValues = array_map(function ($key, $value) use ($level) {
             return makeString($key, $value, $level, BLANK_PREFIX);
-        }, array_keys($value), $value);
-        $value = implode("\n", $mappedValues);
-        $resultString = $spaceString . $prefix . $key . ": {\n" . toString($value) . "\n" . $spaceString . "  }";
+        }, $keys, $value);
 
+        $value = implode("\n", $mappedValues);
+        $resultString = $indent . $prefix . $key . ": {\n" . toString($value) . "\n" . $indent . "  }";
         return $resultString;
     }
 
-    $resultString =  $spaceString . $prefix . $key . ': ' . toString($value);
+    $resultString =  $indent . $prefix . $key . ': ' . toString($value);
     
     return $resultString;
 }

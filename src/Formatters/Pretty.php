@@ -23,75 +23,76 @@ function toPrettyFormat($diff)
 
 function renderDiff($diff, $level = 0)
 {
-    $renderedArray = array_reduce($diff, function ($acc, $node) use ($level) {
-        [
-            'key' => $key,
-            'valueBefore' => $valueBefore,
-            'valueAfter' => $valueAfter,
-            'nodeType' => $nodeType,
-            'children' => $children,
-        ] = $node;
+    $renderedNodes = array_map(function ($node) use ($level) {
+        return makeStringFromNode($node, $level);
+    }, $diff);
 
-        switch ($nodeType) {
-            case NEW_NODE:
-                $acc[] = makeString($key, $valueAfter, $level, NEW_PREFIX);
-                break;
-            case DELETED_NODE:
-                $acc[] = makeString($key, $valueBefore, $level, DEL_PREFIX);
-                break;
-            case UNCHANGED_NODE:
-                $acc[] = makeString($key, $valueBefore, $level, BLANK_PREFIX);
-                break;
-            case CHANGED_NODE:
-                $acc[] = makeString($key, $valueAfter, $level, NEW_PREFIX);
-                $acc[] = makeString($key, $valueBefore, $level, DEL_PREFIX);
-                break;
-            case NESTED_NODE:
-                $nestedlevel = $level + 1;
-                $valueChildren = renderDiff($children, $nestedlevel);
-                $acc[] = makeString($key, $valueChildren, $level, NESTED_NODE);
-                break;
-            default:
-                throw new \Exception("Type of node - '$type' is undefined");
-        }
-
-        return $acc;
-    }, []);
-
-    return implode("\n", $renderedArray);
+    return implode("\n", $renderedNodes);
 }
 
 
-function makeString($key, $value, $level, $prefix)
+function makeStringFromNode($node, $level)
 {
     $spaceCount = MIN_SPACE_COUNT + ($level * SPACE_FOR_EACH_LEVEL_COUNT);
     $indent = str_pad("", $spaceCount, " ", STR_PAD_LEFT);
 
-    if ($prefix === NESTED_NODE) {
-        $resultString = $indent . BLANK_PREFIX . $key . ": {\n" . toString($value) . "\n" . $indent . "  }";
-        return $resultString;
+    [
+        'key' => $key,
+        'valueBefore' => $valueBefore,
+        'valueAfter' => $valueAfter,
+        'nodeType' => $nodeType,
+        'children' => $children,
+    ] = $node;
+
+    $valueBefore = getString($valueBefore, $level);
+    $valueAfter = getString($valueAfter, $level);
+
+    switch ($nodeType) {
+        case NESTED_NODE:
+            $value = renderDiff($children, $level + 1);
+            return $indent . BLANK_PREFIX . $key . ": {\n" . $value  . "\n" . $indent . BLANK_PREFIX . "}";
+        case NEW_NODE:
+            return $indent . NEW_PREFIX . $key . ': ' . $valueAfter;
+        case DELETED_NODE:
+            return $indent . DEL_PREFIX . $key . ': ' . $valueBefore;
+        case UNCHANGED_NODE:
+            return $indent . BLANK_PREFIX . $key . ': ' . $valueAfter;
+        case CHANGED_NODE:
+            $string1 = $indent . NEW_PREFIX . $key . ': ' . $valueAfter;
+            $string2 = $indent . DEL_PREFIX . $key . ': ' . $valueBefore;
+            return $string1 . "\n" . $string2;
+        default:
+            throw new \Exception("Node - '{$nodeType}' is undefined");
     }
-
-    if (is_array($value)) {
-        $level++;
-
-        $keys = array_keys($value);
-        $mappedValues = array_map(function ($key, $value) use ($level) {
-            return makeString($key, $value, $level, BLANK_PREFIX);
-        }, $keys, $value);
-
-        $value = implode("\n", $mappedValues);
-        $resultString = $indent . $prefix . $key . ": {\n" . toString($value) . "\n" . $indent . "  }";
-        return $resultString;
-    }
-
-    $resultString =  $indent . $prefix . $key . ': ' . toString($value);
-    
-    return $resultString;
 }
 
 
-function toString($data)
+function getString($value, $level)
+{
+    return is_array($value) ? makeStringfromArray($value, $level + 1) : booltoString($value);
+}
+
+
+function makeStringfromArray($value, $level)
+{
+    $spaceCountCurrentLevel = MIN_SPACE_COUNT + ($level * SPACE_FOR_EACH_LEVEL_COUNT);
+    $spaceCountPriorLevel = MIN_SPACE_COUNT + (($level - 1) * SPACE_FOR_EACH_LEVEL_COUNT);
+    $indentCurrentLevel = str_pad("", $spaceCountCurrentLevel, " ", STR_PAD_LEFT);
+    $indentPriorLevel = str_pad("", $spaceCountPriorLevel, " ", STR_PAD_LEFT);
+
+    $keys = array_keys($value);
+    
+    $mappedValues = array_map(function ($key, $value) use ($level, $indentCurrentLevel, $indentPriorLevel) {
+        $value = getString($value, $level);
+        return $indentCurrentLevel . BLANK_PREFIX . $key . ': ' . $value;
+    }, $keys, $value);
+
+    $string = implode("\n", $mappedValues);
+    return "{\n" . $string . "\n" . $indentPriorLevel . BLANK_PREFIX . "}";
+}
+
+
+function booltoString($data)
 {
     if (is_bool($data)) {
         return $data ? 'true' : 'false';

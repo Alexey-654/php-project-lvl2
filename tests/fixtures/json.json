@@ -1,25 +1,104 @@
 {
-    "  common": {
-        "  setting1": "Value 1",
-        "- setting2": "200",
-        "  setting3": true,
-        "- setting6": {
-            "key": "value"
+    "common": {
+        "nodeType": "nested",
+        "valueBefore": {
+            "setting1": "Value 1",
+            "setting2": "200",
+            "setting3": true,
+            "setting6": {
+                "key": "value"
+            }
         },
-        "+ setting4": "blah blah",
-        "+ setting5": {
-            "key5": "value5"
+        "valueAfter": {
+            "setting1": "Value 1",
+            "setting3": true,
+            "setting4": "blah blah",
+            "setting5": {
+                "key5": "value5"
+            }
+        },
+        "children": {
+            "setting1": {
+                "nodeType": "unchanged",
+                "valueBefore": "Value 1",
+                "valueAfter": "Value 1",
+                "children": null
+            },
+            "setting2": {
+                "nodeType": "deleted",
+                "valueBefore": "200",
+                "valueAfter": null,
+                "children": null
+            },
+            "setting3": {
+                "nodeType": "unchanged",
+                "valueBefore": true,
+                "valueAfter": true,
+                "children": null
+            },
+            "setting6": {
+                "nodeType": "deleted",
+                "valueBefore": {
+                    "key": "value"
+                },
+                "valueAfter": null,
+                "children": null
+            },
+            "setting4": {
+                "nodeType": "new",
+                "valueBefore": null,
+                "valueAfter": "blah blah",
+                "children": null
+            },
+            "setting5": {
+                "nodeType": "new",
+                "valueBefore": null,
+                "valueAfter": {
+                    "key5": "value5"
+                },
+                "children": null
+            }
         }
     },
-    "  group1": {
-        "+ baz": "bars",
-        "- baz": "bas",
-        "  foo": "bar"
+    "group1": {
+        "nodeType": "nested",
+        "valueBefore": {
+            "baz": "bas",
+            "foo": "bar"
+        },
+        "valueAfter": {
+            "foo": "bar",
+            "baz": "bars"
+        },
+        "children": {
+            "baz": {
+                "nodeType": "changed",
+                "valueBefore": "bas",
+                "valueAfter": "bars",
+                "children": null
+            },
+            "foo": {
+                "nodeType": "unchanged",
+                "valueBefore": "bar",
+                "valueAfter": "bar",
+                "children": null
+            }
+        }
     },
-    "- group2": {
-        "abc": "12345"
+    "group2": {
+        "nodeType": "deleted",
+        "valueBefore": {
+            "abc": "12345"
+        },
+        "valueAfter": null,
+        "children": null
     },
-    "+ group3": {
-        "fee": "100500"
+    "group3": {
+        "nodeType": "new",
+        "valueBefore": null,
+        "valueAfter": {
+            "fee": "100500"
+        },
+        "children": null
     }
 }

@@ -13,12 +13,8 @@ function makeDiff($itemsBefore, $itemsAfter)
     $allKeys = array_unique(array_merge(array_keys($itemsBefore), array_keys($itemsAfter)));
 
     $diff = array_reduce($allKeys, function ($acc, $key) use ($itemsBefore, $itemsAfter) {
-        if (isNestedNode($key, $itemsBefore, $itemsAfter)) {
-            $children = makeDiff($itemsBefore[$key], $itemsAfter[$key]);
-            $acc[] = makeNode($key, $itemsBefore, $itemsAfter, $children);
-        } else {
-            $acc[] = makeNode($key, $itemsBefore, $itemsAfter);
-        }
+        $children = getChildren($key, $itemsBefore, $itemsAfter);
+        $acc[] = makeNode($key, $itemsBefore, $itemsAfter, $children);
 
         return $acc;
     }, []);
@@ -26,16 +22,17 @@ function makeDiff($itemsBefore, $itemsAfter)
     return $diff;
 }
 
-
-function isNestedNode($key, $itemsBefore, $itemsAfter)
+function getChildren($key, $itemsBefore, $itemsAfter)
 {
-    return (
+    if (
         isset($itemsBefore[$key], $itemsAfter[$key])
         && is_array($itemsBefore[$key])
         && is_array($itemsAfter[$key])
-    );
+    ) {
+        $children = makeDiff($itemsBefore[$key], $itemsAfter[$key]);
+    }
+    return $children ?? null;
 }
-
 
 function makeNode($key, $itemsBefore, $itemsAfter, $children = null)
 {

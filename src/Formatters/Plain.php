@@ -8,34 +8,37 @@ use const GenDiff\Diff\UNCHANGED_NODE;
 use const GenDiff\Diff\NESTED_NODE;
 use const GenDiff\Diff\CHANGED_NODE;
 
-function toPlainFormat($diff, $key = '')
+function toPlainFormat($diff)
 {
-    $renderedArray = array_reduce($diff, function ($acc, $node) use ($key) {
-        $key = empty($key) ? $node['key'] : "{$key}.{$node['key']}";
-        $valueBefore = is_array($node['valueBefore']) ? 'complex value' : $node['valueBefore'];
-        $valueAfter = is_array($node['valueAfter']) ? 'complex value' : $node['valueAfter'];
+    $iter = function ($diff, $key = null) use (&$iter) {
+        $filteredNodes = array_filter($diff, fn($node) => $node['nodeType'] !== UNCHANGED_NODE);
 
-        switch ($node['nodeType']) {
-            case NEW_NODE:
-                $acc[] = "Property '{$key}' was added with value: '{$valueAfter}'";
-                break;
-            case DELETED_NODE:
-                $acc[] = "Property '{$key}' was removed";
-                break;
-            case CHANGED_NODE:
-                $acc[] = "Property '{$key}' was changed. From '{$valueBefore}' to '{$valueAfter}'";
-                break;
-            case NESTED_NODE:
-                $acc[] = toPlainFormat($node['children'], $key);
-                break;
-            case UNCHANGED_NODE:
-                break;
-            default:
-                throw new \Exception("Node - '{$node['nodeType']}' is undefined");
-        }
+        $renderedNodes = array_map(function ($node) use (&$iter, $key) {
+            $key = empty($key) ? $node['key'] : "{$key}.{$node['key']}";
+            $valueBefore = setValue($node['valueBefore']);
+            $valueAfter = setValue($node['valueAfter']);
 
-        return $acc;
-    }, []);
+            switch ($node['nodeType']) {
+                case NEW_NODE:
+                    return "Property '{$key}' was added with value: '{$valueAfter}'";
+                case DELETED_NODE:
+                    return "Property '{$key}' was removed";
+                case CHANGED_NODE:
+                    return "Property '{$key}' was changed. From '{$valueBefore}' to '{$valueAfter}'";
+                case NESTED_NODE:
+                    return $iter($node['children'], $key);
+                default:
+                    throw new \Exception("Node - '{$node['nodeType']}' is undefined");
+            }
+        }, $filteredNodes);
+    
+        return implode("\n", $renderedNodes);
+    };
 
-    return implode("\n", $renderedArray);
+    return $iter($diff);
+}
+
+function setValue($value)
+{
+    return is_array($value) ? 'complex value' : $value;
 }

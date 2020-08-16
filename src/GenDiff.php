@@ -19,7 +19,6 @@ function genDiff($pathToFileBefore, $pathToFileAfter, $outputFormat = 'pretty')
     $itemsAfter = parse($dataAfter, $formatFileAfter);
 
     $diff = makeDiff($itemsBefore, $itemsAfter);
-
     switch ($outputFormat) {
         case 'pretty':
             return toPrettyFormat($diff);

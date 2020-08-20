@@ -10,42 +10,17 @@ const NESTED_NODE = 'nested';
 
 function makeDiff($itemsBefore, $itemsAfter)
 {
-    $allKeys = array_unique(array_merge(array_keys($itemsBefore), array_keys($itemsAfter)));
-
-    $diff = array_reduce($allKeys, function ($acc, $key) use ($itemsBefore, $itemsAfter) {
-        $children = getChildren($key, $itemsBefore, $itemsAfter);
-        $acc[] = makeNode($key, $itemsBefore, $itemsAfter, $children);
-
-        return $acc;
-    }, []);
+    $allKeys = getAllUniqueKeys($itemsBefore, $itemsAfter);
+    $diff = array_map(function ($key) use ($itemsBefore, $itemsAfter) {
+        return makeNode($key, $itemsBefore, $itemsAfter);
+    }, $allKeys);
 
     return $diff;
 }
 
-function getChildren($key, $itemsBefore, $itemsAfter)
-{
-    if (
-        isset($itemsBefore[$key], $itemsAfter[$key])
-        && is_array($itemsBefore[$key])
-        && is_array($itemsAfter[$key])
-    ) {
-        $children = makeDiff($itemsBefore[$key], $itemsAfter[$key]);
-    }
-    return $children ?? null;
-}
 
-function makeNode($key, $itemsBefore, $itemsAfter, $children = null)
+function makeNode($key, $itemsBefore, $itemsAfter)
 {
-    if ($children) {
-        return [
-            'key' => $key,
-            'valueBefore' => $itemsBefore[$key],
-            'valueAfter' => $itemsAfter[$key],
-            'nodeType' => NESTED_NODE,
-            'children' => $children
-        ];
-    }
-
     if (!array_key_exists($key, $itemsBefore)) {
         return [
             'key' => $key,
@@ -66,7 +41,19 @@ function makeNode($key, $itemsBefore, $itemsAfter, $children = null)
         ];
     }
 
-    if (in_array($itemsBefore[$key], $itemsAfter, true)) {
+    if (is_array($itemsBefore[$key]) && is_array($itemsAfter[$key])) {
+        $children = makeDiff($itemsBefore[$key], $itemsAfter[$key]);
+
+        return [
+            'key' => $key,
+            'valueBefore' => $itemsBefore[$key],
+            'valueAfter' => $itemsAfter[$key],
+            'nodeType' => NESTED_NODE,
+            'children' => $children
+        ];
+    }
+
+    if ($itemsBefore[$key] === $itemsAfter[$key]) {
         return [
             'key' => $key,
             'valueBefore' => $itemsAfter[$key],
@@ -74,9 +61,7 @@ function makeNode($key, $itemsBefore, $itemsAfter, $children = null)
             'nodeType' => UNCHANGED_NODE,
             'children' => null
         ];
-    }
-
-    if (!in_array($itemsBefore[$key], $itemsAfter, true)) {
+    } else {
         return [
             'key' => $key,
             'valueBefore' => $itemsBefore[$key],
@@ -85,4 +70,13 @@ function makeNode($key, $itemsBefore, $itemsAfter, $children = null)
             'children' => null
         ];
     }
+}
+
+
+function getAllUniqueKeys($items1, $items2)
+{
+    $keys1 = array_keys($items1);
+    $keys2 = array_keys($items2);
+
+    return  array_unique(array_merge($keys1, $keys2));
 }

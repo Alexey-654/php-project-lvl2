@@ -69,7 +69,7 @@ function makeStringFromNode($node, $level)
 
 function getString($value, $level)
 {
-    return is_array($value) ? makeStringfromArray($value, $level + 1) : booltoString($value);
+    return is_array($value) ? makeStringfromArray($value, $level + 1) : boolToString($value);
 }
 
 
@@ -92,7 +92,7 @@ function makeStringfromArray($value, $level)
 }
 
 
-function booltoString($data)
+function boolToString($data)
 {
     if (is_bool($data)) {
         return $data ? 'true' : 'false';

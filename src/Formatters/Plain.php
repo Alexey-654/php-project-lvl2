@@ -15,8 +15,13 @@ function toPlainFormat($diff)
 
         $renderedNodes = array_map(function ($node) use (&$iter, $key) {
             $key = empty($key) ? $node['key'] : "{$key}.{$node['key']}";
-            $valueBefore = setValue($node['valueBefore']);
-            $valueAfter = setValue($node['valueAfter']);
+
+            if (isset($node['valueBefore'])) {
+                $valueBefore = getValue($node['valueBefore']);
+            }
+            if (isset($node['valueAfter'])) {
+                $valueAfter = getValue($node['valueAfter']);
+            }
 
             switch ($node['nodeType']) {
                 case NEW_NODE:
@@ -38,7 +43,7 @@ function toPlainFormat($diff)
     return $iter($diff);
 }
 
-function setValue($value)
+function getValue($value)
 {
     return is_array($value) ? 'complex value' : $value;
 }

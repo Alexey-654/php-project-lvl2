@@ -11,9 +11,7 @@ const NESTED_NODE = 'nested';
 function makeDiff($itemsBefore, $itemsAfter)
 {
     $allKeys = getAllUniqueKeys($itemsBefore, $itemsAfter);
-    $diff = array_map(function ($key) use ($itemsBefore, $itemsAfter) {
-        return makeNode($key, $itemsBefore, $itemsAfter);
-    }, $allKeys);
+    $diff = array_map(fn ($key) => makeNode($key, $itemsBefore, $itemsAfter), $allKeys);
 
     return $diff;
 }
@@ -24,10 +22,8 @@ function makeNode($key, $itemsBefore, $itemsAfter)
     if (!array_key_exists($key, $itemsBefore)) {
         return [
             'key' => $key,
-            'valueBefore' => null,
             'valueAfter' => $itemsAfter[$key],
             'nodeType' => NEW_NODE,
-            'children' => null
         ];
     }
 
@@ -35,9 +31,7 @@ function makeNode($key, $itemsBefore, $itemsAfter)
         return [
             'key' => $key,
             'valueBefore' => $itemsBefore[$key],
-            'valueAfter' => null,
             'nodeType' => DELETED_NODE,
-            'children' => null
         ];
     }
 
@@ -59,7 +53,6 @@ function makeNode($key, $itemsBefore, $itemsAfter)
             'valueBefore' => $itemsAfter[$key],
             'valueAfter' => $itemsBefore[$key],
             'nodeType' => UNCHANGED_NODE,
-            'children' => null
         ];
     } else {
         return [
@@ -67,7 +60,6 @@ function makeNode($key, $itemsBefore, $itemsAfter)
             'valueBefore' => $itemsBefore[$key],
             'valueAfter' => $itemsAfter[$key],
             'nodeType' => CHANGED_NODE,
-            'children' => null
         ];
     }
 }

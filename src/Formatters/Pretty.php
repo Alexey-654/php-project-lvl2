@@ -23,9 +23,7 @@ function toPrettyFormat($diff)
 
 function renderDiff($diff, $level = 0)
 {
-    $renderedNodes = array_map(function ($node) use ($level) {
-        return makeStringFromNode($node, $level);
-    }, $diff);
+    $renderedNodes = array_map(fn ($node) => makeStringFromNode($node, $level), $diff);
 
     return implode("\n", $renderedNodes);
 }
@@ -36,33 +34,29 @@ function makeStringFromNode($node, $level)
     $spaceCount = MIN_SPACE_COUNT + ($level * SPACE_FOR_EACH_LEVEL_COUNT);
     $indent = str_pad("", $spaceCount, " ", STR_PAD_LEFT);
 
-    [
-        'key' => $key,
-        'valueBefore' => $valueBefore,
-        'valueAfter' => $valueAfter,
-        'nodeType' => $nodeType,
-        'children' => $children,
-    ] = $node;
+    if (isset($node['valueBefore'])) {
+        $valueBefore = getString($node['valueBefore'], $level);
+    }
+    if (isset($node['valueAfter'])) {
+        $valueAfter = getString($node['valueAfter'], $level);
+    }
 
-    $valueBefore = getString($valueBefore, $level);
-    $valueAfter = getString($valueAfter, $level);
-
-    switch ($nodeType) {
+    switch ($node['nodeType']) {
         case NESTED_NODE:
-            $value = renderDiff($children, $level + 1);
-            return $indent . BLANK_PREFIX . $key . ": {\n" . $value  . "\n" . $indent . BLANK_PREFIX . "}";
+            $value = renderDiff($node['children'], $level + 1);
+            return $indent . BLANK_PREFIX . $node['key'] . ": {\n" . $value  . "\n" . $indent . BLANK_PREFIX . "}";
         case NEW_NODE:
-            return $indent . NEW_PREFIX . $key . ': ' . $valueAfter;
+            return $indent . NEW_PREFIX . $node['key'] . ': ' . $valueAfter;
         case DELETED_NODE:
-            return $indent . DEL_PREFIX . $key . ': ' . $valueBefore;
+            return $indent . DEL_PREFIX . $node['key'] . ': ' . $valueBefore;
         case UNCHANGED_NODE:
-            return $indent . BLANK_PREFIX . $key . ': ' . $valueAfter;
+            return $indent . BLANK_PREFIX . $node['key'] . ': ' . $valueAfter;
         case CHANGED_NODE:
-            $string1 = $indent . NEW_PREFIX . $key . ': ' . $valueAfter;
-            $string2 = $indent . DEL_PREFIX . $key . ': ' . $valueBefore;
+            $string1 = $indent . NEW_PREFIX . $node['key'] . ': ' . $valueAfter;
+            $string2 = $indent . DEL_PREFIX . $node['key'] . ': ' . $valueBefore;
             return $string1 . "\n" . $string2;
         default:
-            throw new \Exception("Node - '{$nodeType}' is undefined");
+            throw new \Exception("Node - '{$node['nodeType']}' is undefined");
     }
 }
 

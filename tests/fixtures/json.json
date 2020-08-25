@@ -1,6 +1,6 @@
 {
-    "common": {
-        "nodeType": "nested",
+    "0": {
+        "key": "common",
         "valueBefore": {
             "setting1": "Value 1",
             "setting2": "200",
@@ -17,51 +17,48 @@
                 "key5": "value5"
             }
         },
+        "nodeType": "nested",
         "children": {
-            "setting1": {
-                "nodeType": "unchanged",
+            "0": {
+                "key": "setting1",
                 "valueBefore": "Value 1",
                 "valueAfter": "Value 1",
-                "children": null
+                "nodeType": "unchanged"
             },
-            "setting2": {
-                "nodeType": "deleted",
+            "1": {
+                "key": "setting2",
                 "valueBefore": "200",
-                "valueAfter": null,
-                "children": null
+                "nodeType": "deleted"
             },
-            "setting3": {
-                "nodeType": "unchanged",
+            "2": {
+                "key": "setting3",
                 "valueBefore": true,
                 "valueAfter": true,
-                "children": null
+                "nodeType": "unchanged"
             },
-            "setting6": {
-                "nodeType": "deleted",
+            "3": {
+                "key": "setting6",
                 "valueBefore": {
                     "key": "value"
                 },
-                "valueAfter": null,
-                "children": null
+                "nodeType": "deleted"
             },
-            "setting4": {
-                "nodeType": "new",
-                "valueBefore": null,
+            "6": {
+                "key": "setting4",
                 "valueAfter": "blah blah",
-                "children": null
+                "nodeType": "new"
             },
-            "setting5": {
-                "nodeType": "new",
-                "valueBefore": null,
+            "7": {
+                "key": "setting5",
                 "valueAfter": {
                     "key5": "value5"
                 },
-                "children": null
+                "nodeType": "new"
             }
         }
     },
-    "group1": {
-        "nodeType": "nested",
+    "1": {
+        "key": "group1",
         "valueBefore": {
             "baz": "bas",
             "foo": "bar"
@@ -70,35 +67,34 @@
             "foo": "bar",
             "baz": "bars"
         },
-        "children": {
-            "baz": {
-                "nodeType": "changed",
+        "nodeType": "nested",
+        "children": [
+            {
+                "key": "baz",
                 "valueBefore": "bas",
                 "valueAfter": "bars",
-                "children": null
+                "nodeType": "changed"
             },
-            "foo": {
-                "nodeType": "unchanged",
+            {
+                "key": "foo",
                 "valueBefore": "bar",
                 "valueAfter": "bar",
-                "children": null
+                "nodeType": "unchanged"
             }
-        }
+        ]
     },
-    "group2": {
-        "nodeType": "deleted",
+    "2": {
+        "key": "group2",
         "valueBefore": {
             "abc": "12345"
         },
-        "valueAfter": null,
-        "children": null
+        "nodeType": "deleted"
     },
-    "group3": {
-        "nodeType": "new",
-        "valueBefore": null,
+    "5": {
+        "key": "group3",
         "valueAfter": {
             "fee": "100500"
         },
-        "children": null
+        "nodeType": "new"
     }
 }

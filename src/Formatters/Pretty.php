@@ -34,12 +34,8 @@ function makeStringFromNode($node, $level)
     $spaceCount = MIN_SPACE_COUNT + ($level * SPACE_FOR_EACH_LEVEL_COUNT);
     $indent = str_pad("", $spaceCount, " ", STR_PAD_LEFT);
 
-    if (isset($node['valueBefore'])) {
-        $valueBefore = getString($node['valueBefore'], $level);
-    }
-    if (isset($node['valueAfter'])) {
-        $valueAfter = getString($node['valueAfter'], $level);
-    }
+    $valueBefore = isset($node['valueBefore']) ? getString($node['valueBefore'], $level) : null;
+    $valueAfter = isset($node['valueAfter']) ? getString($node['valueAfter'], $level) : null;
 
     switch ($node['nodeType']) {
         case NESTED_NODE:
